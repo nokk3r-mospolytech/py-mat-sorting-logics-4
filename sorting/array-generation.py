@@ -16,5 +16,5 @@ def generation():
     file.close()
 
 
-size = 1000000
+size = 10000000
 generation()

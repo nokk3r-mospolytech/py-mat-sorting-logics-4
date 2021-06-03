@@ -1,41 +1,41 @@
 import errno
 import os
-import sys
 import time
 
+size = "10"
 
-size = "1000000"
-
-file = open("arr_"+size+".txt", "r")
+file = open("arr_" + size + ".txt", "r")
 length = int(file.readline())
 file.readline()
 arr = [int(x) for x in file.readline().split(" ")]
 file.close()
 
 
-def quicksort(array):
-    less = []
-    equal = []
-    greater = []
+def quicksort(arr, begin, end):
+    if end - begin <= 1:
+        return
 
-    if len(array) > 1:
-        pivot = array[0]
-        for x in array:
-            if x < pivot:
-                less.append(x)
-            elif x == pivot:
-                equal.append(x)
-            else:
-                greater.append(x)
-        return quicksort(less) + equal + quicksort(greater)
-    else:
-        return array
+    pivot = partition(arr, begin, end)
+    quicksort(arr, begin, pivot), quicksort(arr, pivot + 1, end)
+
+
+def partition(arr, begin, end):
+    arr[end - 1], arr[(begin + end - 1) // 2], pindex = \
+        arr[(begin + end - 1) // 2], arr[end - 1], begin
+
+    for j in range(begin, end):
+        if arr[j] < arr[end - 1]:
+            arr[pindex], arr[j], pindex = \
+                arr[j], arr[pindex], pindex + 1
+
+    arr[end - 1], arr[pindex] = \
+        arr[pindex], arr[end - 1]
+    return pindex
 
 
 start = time.time()
-arr = quicksort(arr)
+quicksort(arr, 0, len(arr))
 finish = time.time()
-
 
 # creating result file
 filename = "./results/qsort_{}.txt".format(size)
