@@ -1,17 +1,19 @@
 class Solution:
     def nextPermutation(self, nums: List[int]) -> None:
-        index = len(nums) - 2
-        while index >= 0:
-            if nums[index] < nums[index + 1]:
+        nums_len = len(nums)
+        for i in range(nums_len-1, 0, -1):
+            if nums[i] > nums[i-1]:
                 break
-            index -= 1
-        if index < 0:
-            nums.sort()
+        else:
+            i = 0
+        l, r = i, nums_len-1
+        while l < r:
+            nums[l], nums[r] = nums[r], nums[l]
+            l, r = l+1, r-1
+        if not i:
             return
-
-        nextIndex = index + 1
-        while nextIndex < len(nums) and nums[nextIndex] > nums[index]:
-            nextIndex += 1
-
-        nums[index], nums[nextIndex - 1] = nums[nextIndex - 1], nums[index]
-        nums[index + 1:] = nums[index + 1:][::-1]
+        for j in range(i, nums_len):
+            if nums[j] > nums[i-1]:
+                break
+        nums[i-1], nums[j] = nums[j], nums[i-1]
+        return

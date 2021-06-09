@@ -1,29 +1,21 @@
 class Solution:
-    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
-        dummy = curr = ListNode(0)
-        diff = 0
-        while True:
-            if not l1 and not l2:
-                if diff > 0:
-                    curr.next = ListNode(1)
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        index = len(nums) - 2
+        while index >= 0:
+            if nums[index] < nums[index + 1]:
                 break
-            summ = 0
-            if l1 and l2:
-                summ = l1.val + l2.val
-            elif l1:
-                summ = l1.val
-            else:
-                summ = l2.val
-            summ += diff
+            index -= 1
+        if index < 0:
+            nums.sort()
+            return
 
-            if summ > 9:
-                diff = 1
-            else:
-                0
-            curr.next = ListNode(summ % 10)
-            curr = curr.next
-            if l1:
-                l1 = l1.next
-            if l2:
-                l2 = l2.next
-        return dummy.next
+        nextIndex = index + 1
+        while nextIndex < len(nums) and nums[nextIndex] > nums[index]:
+            nextIndex += 1
+
+        # swap index and nextIndex
+        nums[index], nums[nextIndex - 1] = nums[nextIndex - 1], nums[index]
+        nums[index + 1:] = nums[index + 1:][::-1]

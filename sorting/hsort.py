@@ -12,33 +12,45 @@ arr = [int(x) for x in file.readline().split(" ")]
 file.close()
 
 
-def heapify(array, heap_length, root):
-    largest = root
-    left = 2 * root + 1
-    right = 2 * root + 2
-
-    if left < heap_length and array[left] > array[largest]:
-        largest = left
-
-    if right < heap_length and array[right] > array[largest]:
-        largest = right
-
-    if largest != root:
-        array[root], array[largest] = array[largest], array[root]
-
-        heapify(array, heap_length, largest)
+def heapsort(alist):
+    build_max_heap(alist)
+    for i in range(len(alist) - 1, 0, -1):
+        alist[0], alist[i] = alist[i], alist[0]
+        max_heapify(alist, index=0, size=i)
 
 
-def heapsort(array):
-    arr_length = len(array)
+def parent(i):
+    return (i - 1) // 2
 
-    for j in range(arr_length // 2, -1, -1):
-        heapify(array, arr_length, j)
 
-    for j in range(arr_length - 1, 0, -1):
-        array[0], array[j] = array[j], array[0]
+def left(i):
+    return 2 * i + 1
 
-        heapify(array, j, 0)
+
+def right(i):
+    return 2 * i + 2
+
+
+def build_max_heap(alist):
+    length = len(alist)
+    start = parent(length - 1)
+    while start >= 0:
+        max_heapify(alist, index=start, size=length)
+        start = start - 1
+
+
+def max_heapify(alist, index, size):
+    l = left(index)
+    r = right(index)
+    if (l < size and alist[l] > alist[index]):
+        largest = l
+    else:
+        largest = index
+    if (r < size and alist[r] > alist[largest]):
+        largest = r
+    if (largest != index):
+        alist[largest], alist[index] = alist[index], alist[largest]
+        max_heapify(alist, largest, size)
 
 
 start = time.time()
